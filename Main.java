@@ -1,174 +1,189 @@
-package application;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent; 
+
+public class MainIteration {
 	
-import java.util.ArrayList;
+	private static final String DEVELOPERS = "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
+	private double myVersionNumb;
+	private JFrame frmAppliance;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private DefaultMutableTreeNode root;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeItem.TreeModificationEvent;
-import javafx.scene.control.TreeView;
-import javafx.scene.control.TreeView.EditEvent;
-import javafx.scene.control.cell.TextFieldTreeCell;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-
-
-public class Main extends Application {
-	
-	// Create the TreeView
-    private final TreeView treeView = new TreeView();
-	 // Create the TextField
-    private TextField textField = new TextField();
-    // Create the TextArea
-    private final TextArea textArea = new TextArea();
-   
-    
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			
-			TreeviewHelper helper = new TreeviewHelper();
-			ArrayList<TreeItem> rooms = helper.getRooms();
-			
-			
-			//Create the root folder
-			TreeItem rootItem = new TreeItem("My House");
-			//Add children to the root
-			rootItem.getChildren().addAll(rooms);
-			//Set the root item.
-			treeView.setRoot(rootItem);
-			//Make the tree editable
-			treeView.setEditable(true);
-			// Set a cell factory to use TextFieldTreeCell
-	        treeView.setCellFactory(TextFieldTreeCell.forTreeView());
-	       
-	        
-	       
-			
-			VBox rightPane = getRightPane();
-			rightPane.getChildren().add(treeView);
-			
-			HBox root = new HBox();
-			root.setSpacing(20);
-			root.getChildren().addAll(treeView,rightPane);
-			//BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,600,400);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.setTitle("Deliverable 1");
-			primaryStage.show();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private VBox getRightPane() {
-		
-		//Create the about button.
-		   Button AboutBtn = new Button("About");
-	        AboutBtn.setOnAction(new EventHandler()
-	        {
-	            @Override
-	            public void handle(Event event)
-	            {
-	                aboutButton();
-	            }
-	        });
-	        
-		// Create the addItemBtn and its corresponding Event Handler
-        Button addItemBtn = new Button("Add new Item");
-        addItemBtn.setOnAction(new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-                addItem(textField.getText());
-            }
-        });
- 
-        // Create the removeItemBtn and its corresponding Event Handler
-        Button removeItemBtn = new Button("Remove Selected Item");
-        removeItemBtn.setOnAction(new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-                removeItem();
-            }
-        });
- 
-        // Set the preferred number of text rows
-        textArea.setPrefRowCount(15);
-        // Set the preferred number of text columns
-        textArea.setPrefColumnCount(25);
- 
-        // Create the HBox
-        HBox hbox = new HBox();
-        // Add Children to the HBox
-        hbox.getChildren().addAll(new Label("Item:"), textField, addItemBtn,AboutBtn);
- 
-        // Create the VBox
-        VBox vbox = new VBox();
-        // Add children to the VBox
-        vbox.getChildren().addAll(new Label("Select an item to add to or remove."),hbox,removeItemBtn);
-        // Set the vertical space between each child in the VBox
-        vbox.setSpacing(10);
-         
-        return vbox;
-	}
-
-	private void addItem(String value) {
-		if (value == null || value.trim().equals("")){
-          return;
-        }
- 
-        TreeItem parent = (TreeItem) treeView.getSelectionModel().getSelectedItem();
- 
-        if (parent == null){
-            return;
-        }
- 
-        TreeItem newItem = new TreeItem(value);
-        parent.getChildren().add(newItem);
- 
-        if (!parent.isExpanded())
-        {
-            parent.setExpanded(true);
-        }
-	}
-	
-	private void removeItem()
-    {
-        TreeItem item = (TreeItem) treeView.getSelectionModel().getSelectedItem();
- 
-        if (item == null){
-            return;
-        }
- 
-        TreeItem parent = item.getParent();
-        if (parent == null ){
-        	return;
-        }
-        else{
-            parent.getChildren().remove(item);
-        }
-    }
-	private void aboutButton() {
-		final AboutBox mainFrame = new AboutBox();
-		mainFrame.start();
-		
-	}
+	/**
+	 * Launch the application.
+	 */
 	public static void main(String[] args) {
-		launch(args);
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainIteration window = new MainIteration();
+					window.frmAppliance.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public MainIteration() {
+		initialize();
+		this.myVersionNumb = 0.0;
+		this.setVersionNumb(1.0);
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmAppliance = new JFrame();
+		frmAppliance.setTitle("Data Iteration");
+		frmAppliance.setBounds(100, 100, 759, 447);
+		centerWindow(frmAppliance);
+		frmAppliance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAppliance.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(0, 0, 210, 425);
+		frmAppliance.getContentPane().add(panel);
+		
+		root = new DefaultMutableTreeNode("Appliance");  
+	    //ChildNode
+		DefaultMutableTreeNode liv = new DefaultMutableTreeNode("Living Room");
+
+	    DefaultMutableTreeNode kit = new DefaultMutableTreeNode("Kitchen");
+	    DefaultMutableTreeNode bat = new DefaultMutableTreeNode("Bathroom");
+	    root.add(liv);
+	    root.add(kit);
+	    root.add(bat);
+	    
+	    
+	    DefaultMutableTreeNode item1 = new DefaultMutableTreeNode("TV");
+	    DefaultMutableTreeNode item2 = new DefaultMutableTreeNode("Digital Watch"); 
+	    DefaultMutableTreeNode item3 = new DefaultMutableTreeNode("Air Conditioner");  
+	    
+	    liv.add(item1);
+	    liv.add(item2);
+	    liv.add(item3);
+	    
+	    panel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
+	    
+	    JTree jt = new JTree(root);
+	    panel.add(jt);
+
+
+	    JLabel lblSelect = new JLabel("Select an item to add to or remove");
+		lblSelect.setBounds(250, 138, 224, 16);
+		frmAppliance.getContentPane().add(lblSelect);
+		
+		textField = new JTextField();
+		textField.setBounds(290, 166, 130, 26);
+		frmAppliance.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JButton btnAdd = new JButton("Add New Item");
+		btnAdd.setBounds(432, 166, 117, 29);
+		frmAppliance.getContentPane().add(btnAdd);
+		
+		JButton btnAbout = new JButton("About");
+		btnAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, DEVELOPERS, "Developers", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		btnAbout.setBounds(569, 166, 117, 29);
+		frmAppliance.getContentPane().add(btnAbout);
+		
+		JButton btnRemove = new JButton("Remove Seleted Item");
+		
+		btnRemove.setBounds(285, 207, 174, 29);
+		frmAppliance.getContentPane().add(btnRemove);
+		
+		JLabel lblItem = new JLabel("Item:");
+		lblItem.setBounds(248, 171, 61, 16);
+		frmAppliance.getContentPane().add(lblItem);
+		
+		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setBounds(250, 18, 96, 16);
+		frmAppliance.getContentPane().add(lblFirstName);
+		
+		JLabel lblEmail = new JLabel("Email:");
+		lblEmail.setBounds(250, 46, 96, 16);
+		frmAppliance.getContentPane().add(lblEmail);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(391, 13, 158, 26);
+		frmAppliance.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(391, 41, 158, 26);
+		frmAppliance.getContentPane().add(textField_2);
+		textField_2.setColumns(10);
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String uFirstName = textField_1.getText();
+				String uEmail = textField_2.getText();
+				File data = new File("userInfo.txt");
+				FileWriter toFile = null;
+				try {
+					toFile = new FileWriter(data, true);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+				if(!uEmail.contains("@")) {
+					JOptionPane.showMessageDialog(frmAppliance, "Wrong Email Format! Please Try it again");
+				} else {
+					JOptionPane.showMessageDialog(frmAppliance, "Saved.");
+					try {
+						toFile.append("First Name: " + uFirstName + ", " + "Email: " + uEmail + "\n");
+						toFile.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		btnSave.setBounds(391, 77, 117, 29);
+		frmAppliance.getContentPane().add(btnSave);
+	}
+	
+	public void setVersionNumb(final double theVersionNumb) {
+		this.myVersionNumb = theVersionNumb;
+	}
+	
+	private void centerWindow(final Window theFrame) {
+		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		final int x = (int) ((dimension.getWidth() - theFrame.getWidth()) / 2);
+		final int y = (int) ((dimension.getHeight() - theFrame.getHeight()) / 2);
+		theFrame.setLocation(x, y);
 	}
 }
