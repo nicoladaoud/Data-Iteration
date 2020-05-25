@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
-public class userNameEmail {
+public class UserNameEmail {
 
 	private JFrame frame;
 	private JTextField username;
@@ -25,7 +25,7 @@ public class userNameEmail {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					userNameEmail window = new userNameEmail();
+					UserNameEmail window = new UserNameEmail();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,7 +38,7 @@ public class userNameEmail {
 	 * Create the application.
 	 * @throws IOException 
 	 */
-	public userNameEmail() {
+	public UserNameEmail() {
 		initialize();
 	}
 
