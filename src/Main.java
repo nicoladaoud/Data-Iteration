@@ -22,7 +22,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent; 
 
-public class MainIteration {
+public class Main {
 	
 	private static final String DEVELOPERS = "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
 	private double myVersionNumb;
@@ -39,7 +39,7 @@ public class MainIteration {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainIteration window = new MainIteration();
+					Main window = new Main();
 					window.frmAppliance.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,7 +51,7 @@ public class MainIteration {
 	/**
 	 * Create the application.
 	 */
-	public MainIteration() {
+	public Main() {
 		initialize();
 		this.myVersionNumb = 0.0;
 		this.setVersionNumb(1.0);
