@@ -117,12 +117,12 @@ public class MainIteration {
 				JOptionPane.showMessageDialog(null, DEVELOPERS, "Developers", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
-		btnAbout.setBounds(569, 166, 117, 29);
+		btnAbout.setBounds(290, 204, 117, 29);
 		frmAppliance.getContentPane().add(btnAbout);
 		
 		JButton btnRemove = new JButton("Remove Seleted Item");
 		
-		btnRemove.setBounds(285, 207, 174, 29);
+		btnRemove.setBounds(558, 166, 174, 29);
 		frmAppliance.getContentPane().add(btnRemove);
 		
 		JLabel lblItem = new JLabel("Item:");
