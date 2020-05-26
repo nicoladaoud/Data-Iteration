@@ -3,10 +3,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
@@ -103,5 +108,6 @@ public class UserNameEmail {
 		lblFirstName = new JLabel("First Name:");
 		lblFirstName.setBounds(69, 107, 97, 16);
 		frame.getContentPane().add(lblFirstName);
-	}
+		
+	}		
 }
