@@ -7,9 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -26,6 +28,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MainIteration {
+	
+	private String firstName;
+	private String email;
 
 	private static final String DEVELOPERS = "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
 	private static final String EXTRA_INFO = "Application Location: C:\\Download \n"
@@ -158,6 +163,8 @@ public class MainIteration {
 			public void actionPerformed(ActionEvent e) {
 				String uFirstName = textField_1.getText();
 				String uEmail = textField_2.getText();
+				firstName = uFirstName;
+				email = uEmail;
 				File data = new File("userInfo.txt");
 				FileWriter toFile = null;
 				try {
@@ -214,6 +221,44 @@ public class MainIteration {
 		});
 		importButton.setBounds(515, 77, 130, 29);
 		frmAppliance.getContentPane().add(importButton);
+		
+		JButton btnExport = new JButton("Export");
+		btnExport.addActionListener(new ActionListener() { // exporting functionality by Nicola
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser myFileChooser = new JFileChooser();
+				
+                final int result = myFileChooser.showSaveDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                   
+                        String x = myFileChooser.getSelectedFile().getAbsolutePath();
+                        //System.out.print(x);
+                        File file = new File(x);
+                        ObjectOutputStream oos = null;
+    				    FileOutputStream fout = null;
+    				    try{ 
+    				    	FileWriter toFile = new FileWriter(file, true);
+    				    	toFile.append("First Name: " + firstName + ", " + "Email: " + email + "\n");
+    						toFile.close();
+    				      fout = new FileOutputStream(x, true);
+    				      oos = new ObjectOutputStream(fout);
+    				     // oos.writeObject(this);
+    				     } catch (Exception ex) {}
+    				     finally {
+    				       if(oos != null){
+    				         try {oos.close();} catch (Exception ex) {}
+    				       }
+    				     }
+                        
+   
+                }
+				
+			}
+
+		});
+		btnExport.setBounds(515, 108, 100, 29);
+		frmAppliance.getContentPane().add(btnExport);
+		
+		
 
 	}
 
