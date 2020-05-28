@@ -79,9 +79,9 @@ public class MainIteration {
 	/**
 	*@author Nicola Daoud, Gyubeom Kim, Jun Kim, Tyler Phippen
 	*Nicola implemented exporting functioanlity
-	...
-
-
+	*Gyubeom implemented the functionality of saving user information (email and name)
+	*gyubeom and Jun Kim both pretty much rewrote all of the window and JFrame as well
+	*Tyler: the open file method, and the import button
 	**/
 	private void initialize() { 
 		frmAppliance = new JFrame();
