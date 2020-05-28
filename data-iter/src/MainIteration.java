@@ -77,9 +77,16 @@ public class MainIteration {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	*@author Nicola Daoud, Gyubeom Kim, Jun Kim, Tyler Phippen
+	*Nicola implemented exporting functioanlity
+	*Gyubeom implemented the functionality of saving user information (email and name)
+	*gyubeom and Jun Kim both pretty much rewrote all of the window and JFrame as well
+	*Tyler: the open file method, and the import button
+	* Jun: created the Add and Remove functionality. Also created the "extra" button.
+	**/
+
+	private void initialize() { 
+		
 		frmAppliance = new JFrame();
 		frmAppliance.setTitle("Data Iteration");
 		frmAppliance.setBounds(100, 100, 759, 447);
@@ -92,28 +99,9 @@ public class MainIteration {
 		panel.setBounds(0, 0, 210, 425);
 		frmAppliance.getContentPane().add(panel);
 		
-		root = new DefaultMutableTreeNode("Appliance");
-		
-		// ChildNode
-		DefaultMutableTreeNode liv = new DefaultMutableTreeNode("Living Room");
-
-		DefaultMutableTreeNode kit = new DefaultMutableTreeNode("Kitchen");
-		DefaultMutableTreeNode bat = new DefaultMutableTreeNode("Bathroom");
-		root.add(liv);
-		root.add(kit);
-		root.add(bat);
-
-		DefaultMutableTreeNode item1 = new DefaultMutableTreeNode("TV");
-		DefaultMutableTreeNode item2 = new DefaultMutableTreeNode("Digital Watch");
-		DefaultMutableTreeNode item3 = new DefaultMutableTreeNode("Air Conditioner");
-
-		liv.add(item1);
-		liv.add(item2);
-		liv.add(item3);
-
 		panel.setLayout(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
-		JTree jt = new JTree(root);
+		JTree jt = new JTree(new TreeInit().getTree());
 		panel.add(jt);
 
 		JLabel lblSelect = new JLabel("Select an item to add to or remove");
@@ -262,6 +250,7 @@ public class MainIteration {
 		importButton.setBounds(515, 77, 130, 29);
 		frmAppliance.getContentPane().add(importButton);
 		
+		
 		JButton btnExport = new JButton("Export");
 		btnExport.addActionListener(new ActionListener() { // exporting functionality by Nicola
 			public void actionPerformed(ActionEvent e) {
@@ -297,9 +286,6 @@ public class MainIteration {
 		});
 		btnExport.setBounds(515, 108, 100, 29);
 		frmAppliance.getContentPane().add(btnExport);
-		
-		
-
 	}
 
 	/**
