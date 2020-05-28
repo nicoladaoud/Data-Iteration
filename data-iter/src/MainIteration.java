@@ -77,9 +77,13 @@ public class MainIteration {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	*@author Nicola Daoud, Gyubeom Kim, Jun Kim, Tyler Phippen
+	*Nicola implemented exporting functioanlity
+	...
+
+
+	**/
+	private void initialize() { 
 		frmAppliance = new JFrame();
 		frmAppliance.setTitle("Data Iteration");
 		frmAppliance.setBounds(100, 100, 759, 447);
@@ -261,6 +265,7 @@ public class MainIteration {
 		});
 		importButton.setBounds(515, 77, 130, 29);
 		frmAppliance.getContentPane().add(importButton);
+		
 		
 		JButton btnExport = new JButton("Export");
 		btnExport.addActionListener(new ActionListener() { // exporting functionality by Nicola
