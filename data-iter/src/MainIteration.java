@@ -82,6 +82,7 @@ public class MainIteration {
 	*Gyubeom implemented the functionality of saving user information (email and name)
 	*gyubeom and Jun Kim both pretty much rewrote all of the window and JFrame as well
 	*Tyler: the open file method, and the import button
+	* Jun: created the Add and Remove functionality. Also created the "extra" button.
 	**/
 	private void initialize() { 
 		frmAppliance = new JFrame();
