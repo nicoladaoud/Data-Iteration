@@ -1,5 +1,5 @@
 import javax.swing.tree.DefaultMutableTreeNode;
-
+//helper class
 public class TreeInit {
 	public DefaultMutableTreeNode root;
 	
