@@ -153,6 +153,61 @@ public class MainIteration {
 		frmAppliance.getContentPane().add(textField_2);
 		textField_2.setColumns(10);
 
+		buildExtraButton();
+		buildImportButton();
+		buildSaveButton();
+
+	}
+
+	/**
+	 * Helper method to build Extra button.
+	 */
+	private void buildExtraButton() {
+		JButton ExtraBtn = new JButton("Extra");
+		ExtraBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, EXTRA_INFO, "Extra Information", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		ExtraBtn.setBounds(420, 204, 117, 29);
+		frmAppliance.getContentPane().add(ExtraBtn);
+	}
+
+	/**
+	 * Helper method to build the import button.
+	 */
+	private void buildImportButton() {
+		JButton importButton = new JButton("Import Settings");
+		importButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (openFile()) {
+						FileInputStream fis = new FileInputStream(mySettings);
+						ObjectInputStream ois = new ObjectInputStream(fis);
+						try {
+							ois.readObject();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+						String userInfo = ois.toString();
+						fis.close();
+						ois.close();
+						JOptionPane.showMessageDialog(frmAppliance, "Imported Settings: " + userInfo);
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		importButton.setBounds(515, 77, 130, 29);
+		frmAppliance.getContentPane().add(importButton);
+
+	}
+	
+	/**
+	 * Helper method to build Save button.
+	 */
+	private void buildSaveButton() {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -180,40 +235,6 @@ public class MainIteration {
 		});
 		btnSave.setBounds(391, 77, 117, 29);
 		frmAppliance.getContentPane().add(btnSave);
-
-		JButton ExtraBtn = new JButton("Extra");
-		ExtraBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, EXTRA_INFO, "Extra Information", JOptionPane.PLAIN_MESSAGE);
-			}
-		});
-		ExtraBtn.setBounds(420, 204, 117, 29);
-		frmAppliance.getContentPane().add(ExtraBtn);
-
-		JButton importButton = new JButton("Import Settings");
-		importButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (openFile()) {
-						FileInputStream fis = new FileInputStream(mySettings);
-						ObjectInputStream ois = new ObjectInputStream(fis);
-						try {
-							ois.readObject();
-						} catch (ClassNotFoundException e1) {
-							e1.printStackTrace();
-						}
-						String userInfo = ois.toString();
-						fis.close();
-						ois.close();
-						JOptionPane.showMessageDialog(frmAppliance, "Imported Settings: " + userInfo);
-					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		importButton.setBounds(515, 77, 130, 29);
-		frmAppliance.getContentPane().add(importButton);
 
 	}
 
