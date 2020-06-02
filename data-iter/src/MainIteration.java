@@ -85,8 +85,12 @@ public class MainIteration {
 	* Jun: created the Add and Remove functionality. Also created the "extra" button.
 	**/
 
+
 	private void initialize() { 
 		
+
+	private void initialize() { 
+
 		frmAppliance = new JFrame();
 		frmAppliance.setTitle("Data Iteration");
 		frmAppliance.setBounds(100, 100, 759, 447);
