@@ -41,8 +41,8 @@ public class MainIteration {
 	private double myVersionNumb;
 	private JFrame frmAppliance;
 	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField typedUserFirst;
+	private JTextField typedUserEmail;
 	private DefaultMutableTreeNode root;
 	private DefaultMutableTreeNode node;
 	private TreePath treePath;
@@ -84,11 +84,6 @@ public class MainIteration {
 	*Tyler: the open file method, and the import button
 	* Jun: created the Add and Remove functionality. Also created the "extra" button.
 	**/
-
-
-	private void initialize() { 
-		
-
 	private void initialize() { 
 
 		frmAppliance = new JFrame();
@@ -140,15 +135,6 @@ public class MainIteration {
 		btnAdd.setBounds(432, 166, 117, 29);
 		frmAppliance.getContentPane().add(btnAdd);
 
-		JButton btnAbout = new JButton("About");
-		btnAbout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, DEVELOPERS, "Developers", JOptionPane.PLAIN_MESSAGE);
-			}
-		});
-		btnAbout.setBounds(290, 204, 117, 29);
-		frmAppliance.getContentPane().add(btnAbout);
-
 		JButton btnRemove = new JButton("Remove Seleted Item");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,7 +153,12 @@ public class MainIteration {
 
 		btnRemove.setBounds(558, 166, 174, 29);
 		frmAppliance.getContentPane().add(btnRemove);
-
+		
+		//About
+		JButton btnAbout = new JButton("About");
+		about(btnAbout);
+		
+		//User First, Email - Save
 		JLabel lblItem = new JLabel("Item:");
 		lblItem.setBounds(248, 171, 61, 16);
 		frmAppliance.getContentPane().add(lblItem);
@@ -180,45 +171,18 @@ public class MainIteration {
 		lblEmail.setBounds(250, 46, 96, 16);
 		frmAppliance.getContentPane().add(lblEmail);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(391, 13, 158, 26);
-		frmAppliance.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		typedUserFirst = new JTextField();
+		typedUserFirst.setBounds(391, 13, 158, 26);
+		frmAppliance.getContentPane().add(typedUserFirst);
+		typedUserFirst.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(391, 41, 158, 26);
-		frmAppliance.getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		typedUserEmail = new JTextField();
+		typedUserEmail.setBounds(391, 41, 158, 26);
+		frmAppliance.getContentPane().add(typedUserEmail);
+		typedUserEmail.setColumns(10);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String uFirstName = textField_1.getText();
-				String uEmail = textField_2.getText();
-				firstName = uFirstName;
-				email = uEmail;
-				File data = new File("userInfo.txt");
-				FileWriter toFile = null;
-				try {
-					toFile = new FileWriter(data, true);
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
-				if (!uEmail.contains("@")) {
-					JOptionPane.showMessageDialog(frmAppliance, "Wrong Email Format! Please Try it again");
-				} else {
-					JOptionPane.showMessageDialog(frmAppliance, "Saved.");
-					try {
-						toFile.append("First Name: " + uFirstName + ", " + "Email: " + uEmail + "\n");
-						toFile.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
-		btnSave.setBounds(391, 77, 117, 29);
-		frmAppliance.getContentPane().add(btnSave);
+		userNameEmail(btnSave);
 
 		JButton ExtraBtn = new JButton("Extra");
 		ExtraBtn.addActionListener(new ActionListener() {
@@ -291,7 +255,7 @@ public class MainIteration {
 		btnExport.setBounds(515, 108, 100, 29);
 		frmAppliance.getContentPane().add(btnExport);
 	}
-
+	
 	/**
 	 * method to check if a file was opened.
 	 * 
@@ -308,11 +272,71 @@ public class MainIteration {
 		}
 		return success;
 	}
-
+	
+	/**
+	 * It shows the message containing developers' names and version.
+	 * 
+	 * @param theButton representing the About button
+	 */
+	private void about(JButton theButton) {
+		theButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, DEVELOPERS, "Developers", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		theButton.setBounds(290, 204, 117, 29);
+		frmAppliance.getContentPane().add(theButton);
+	}
+	
+	/**
+	 * It saves the information of user first name and email
+	 * in the text file.
+	 * 
+	 * @param theSave representing the Save button
+	 */
+	public void userNameEmail(JButton theSave) {
+		theSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String uFirstName = typedUserFirst.getText();
+				String uEmail = typedUserEmail.getText();
+				File data = new File("userInfo.txt");
+				FileWriter toFile = null;
+				try {
+					toFile = new FileWriter(data, true);
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+				if(!uEmail.contains("@")) {
+					JOptionPane.showMessageDialog(frmAppliance, "Wrong Email Format! Please Try it again");
+				} else {
+					JOptionPane.showMessageDialog(frmAppliance, "Saved.");
+					try {
+						toFile.append("First Name: " + uFirstName + ", " + "Email: " + uEmail + "\n");
+						toFile.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		theSave.setBounds(391, 77, 117, 29);
+		frmAppliance.getContentPane().add(theSave);
+	}
+	
+	/**
+	 * It set the version number.
+	 * 
+	 * @param theVersionNumb representing the version number
+	 */
 	public void setVersionNumb(final double theVersionNumb) {
 		this.myVersionNumb = theVersionNumb;
 	}
 
+    /**
+     * It makes the frame to locate in center of window screen.
+     * 
+     * @param theFrame representing the frame
+     */
 	private void centerWindow(final Window theFrame) {
 		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		final int x = (int) ((dimension.getWidth() - theFrame.getWidth()) / 2);
