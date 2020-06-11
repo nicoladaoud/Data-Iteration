@@ -25,6 +25,12 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.FlowLayout;
 
+/**
+ * 
+ * @author Nicola, Tyler, Gyubeom, Jun
+ *
+ */
+
 public class MainIteration {
 	//main
 		private String firstName;
@@ -196,6 +202,24 @@ public class MainIteration {
 			ExtraBtn.setBounds(420, 204, 117, 29);
 			frmAppliance.getContentPane().add(ExtraBtn);
 
+			JButton importButton = importBtn();
+			importButton.setBounds(515, 77, 130, 29);
+			frmAppliance.getContentPane().add(importButton);
+			
+			
+			JButton btnExport = export();
+			btnExport.setBounds(515, 108, 100, 29);
+			frmAppliance.getContentPane().add(btnExport);
+		}
+		
+		
+		
+		
+		/**
+		 * method for importing functoinality
+		 * @return import button
+		 */
+		private JButton importBtn() {
 			JButton importButton = new JButton("Import Settings");
 			importButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -218,10 +242,14 @@ public class MainIteration {
 					}
 				}
 			});
-			importButton.setBounds(515, 77, 130, 29);
-			frmAppliance.getContentPane().add(importButton);
-			
-			
+			return importButton;
+		}
+		
+		/**
+		 * method for exporting functionality
+		 * @return export button
+		 */
+		private JButton export() {
 			JButton btnExport = new JButton("Export");
 			btnExport.addActionListener(new ActionListener() { // exporting functionality by Nicola
 				public void actionPerformed(ActionEvent e) {
@@ -255,8 +283,7 @@ public class MainIteration {
 				}
 
 			});
-			btnExport.setBounds(515, 108, 100, 29);
-			frmAppliance.getContentPane().add(btnExport);
+			return btnExport;
 		}
 		
 		/**
@@ -302,6 +329,9 @@ public class MainIteration {
 				public void actionPerformed(ActionEvent e) {
 					String uFirstName = typedUserFirst.getText();
 					String uEmail = typedUserEmail.getText();
+					firstName = uFirstName;
+					email = uEmail;
+					
 					File data = new File("userInfo.txt");
 					FileWriter toFile = null;
 					try {
