@@ -8,8 +8,13 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,14 +25,22 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
 import org.icepdf.ri.common.ComponentKeyBinding;
 import org.icepdf.ri.common.SwingController;
 import org.icepdf.ri.common.SwingViewBuilder;
 
 
 public class AppGUI {
-
+	
+	private static final String EXTRA_INFO = "Application Location: C:\\Download \n"
+			+ "For inquiries, contact 'junyeob@uw.edu'\r\n" + "Thank you for choosing our software.";
+	
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
 
@@ -39,7 +52,7 @@ public class AppGUI {
     /**
      * This is file chooser.
      */
-    private JFileChooser myFileChooser;
+    private JFileChooser myChooser;
 
     /**
      * ...
@@ -71,18 +84,32 @@ public class AppGUI {
      */
     private boolean adminStatus;
     
+    private File mySettings;
+    
+    private TreePath treePath;
+    
+    private JTree jt;
+    
+    private int index;
+    
+	private DefaultMutableTreeNode root;
+	
+	private DefaultMutableTreeNode node;
     /**
      * ...
      */
     public AppGUI() {
         this.myFrame = new JFrame("User Guide");
-        this.myFileChooser = new JFileChooser(".");
+        this.myChooser = new JFileChooser(".");
         this.myVersionNumb = 1.0;
         this.userFirstName = "";
         this.userEmail = "";
         this.adminId = "";
         this.adminPass = "";
         this.adminStatus = false;
+        this.mySettings = null;
+        this.treePath = null;
+        this.jt = null;
         myFrame.setBounds(100, 100, 1528, 894);
     }
     
@@ -130,12 +157,18 @@ public class AppGUI {
         
         centerPdfView(centPanel);
         createEastSideButtons(eastSidePanel);
+        createWestSideTree(westSidePanel);
         createSouthSideButtons(southSidePanel);
 
         this.myFrame.getContentPane().add(mainPanel);
 
     }
-
+    
+    private void createWestSideTree(final JPanel theWestSidePanel) {
+		this.jt = new JTree(new TreeInit().getTree());
+		theWestSidePanel.add(this.jt);
+    }
+    
     private void centerPdfView(JPanel theCentSidePanel) {
         String filepath = "/Users/GyubeomKim/Desktop/v8_absolute.pdf";
 
@@ -280,9 +313,82 @@ public class AppGUI {
         final JButton exportButton = new JButton("Export");
         importButton.setBackground(Color.WHITE);
         exportButton.setBackground(Color.WHITE);
+        
+        importButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (openFile()) {
+						FileInputStream fis = new FileInputStream(mySettings);
+						ObjectInputStream ois = new ObjectInputStream(fis);
+						try {
+							ois.readObject();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						}
+						String userInfo = ois.toString();
+						fis.close();
+						ois.close();
+						JOptionPane.showMessageDialog(null, "Imported Settings: " + userInfo);
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+        
+        exportButton.addActionListener(new ActionListener() { // exporting functionality by Nicola
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser myFileChooser = new JFileChooser();
+				
+                final int result = myFileChooser.showSaveDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                   
+                        String x = myFileChooser.getSelectedFile().getAbsolutePath();
+                        //System.out.print(x);
+                        File file = new File(x);
+                        ObjectOutputStream oos = null;
+    				    FileOutputStream fout = null;
+    				    try{ 
+    				    	FileWriter toFile = new FileWriter(file, true);
+    				    	toFile.append("First Name: " + userFirstName + ", " + "Email: " + userEmail + "\n");
+    						toFile.close();
+    				      fout = new FileOutputStream(x, true);
+    				      oos = new ObjectOutputStream(fout);
+    				     // oos.writeObject(this);
+    				     } catch (Exception ex) {}
+    				     finally {
+    				       if(oos != null){
+    				         try {oos.close();} catch (Exception ex) {}
+    				       }
+    				     }
+                        
+   
+                }
+				
+			}
+
+		});
+		
         theSouthSidePanel.add(importButton);
         theSouthSidePanel.add(exportButton);
     }
+    
+	/**
+	 * method to check if a file was opened.
+	 * 
+	 * @return success
+	 * @throws IOException
+	 */
+	private boolean openFile() throws IOException {
+		boolean success = false;
+		final int result = myChooser.showOpenDialog(myChooser);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			success = true;
+			mySettings = myChooser.getSelectedFile();
+
+		}
+		return success;
+	}
     
     private boolean getAdminStatus() {
         return this.adminStatus;
@@ -300,7 +406,11 @@ public class AppGUI {
         JButton removeButton = new JButton("REMOVE");
         removeButton.setBounds(127, 207, 117, 29);
         theEasthSidePanel.add(removeButton);
-
+        
+        JButton extraButton = new JButton("EXTRA");
+        extraButton.setBounds(16, 260, 117, 29);
+        theEasthSidePanel.add(extraButton);
+        
         JLabel selectLabel = new JLabel("Select an item to add to or remove");
         selectLabel.setBounds(16, 99, 228, 16);
         theEasthSidePanel.add(selectLabel);
@@ -313,6 +423,53 @@ public class AppGUI {
         JLabel itemLabel = new JLabel("Item:");
         itemLabel.setBounds(31, 144, 61, 16);
         theEasthSidePanel.add(itemLabel);
+        
+        
+        addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				
+		            DefaultMutableTreeNode SelectedNode;
+
+		            treePath = jt.getSelectionPath();
+		            SelectedNode = (DefaultMutableTreeNode) treePath
+		                    .getLastPathComponent();
+
+		            index = SelectedNode.getIndex(SelectedNode) + 1;
+
+		            String NodeStr = input.getText();
+
+		            node = new DefaultMutableTreeNode(NodeStr);
+		            SelectedNode.insert(node, index);
+		            jt.updateUI();
+			}
+		});
+        
+        removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    
+				 DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+
+	                TreePath[] paths = jt.getSelectionPaths();
+	                if (paths != null) {
+	                    for (TreePath path : paths) {
+	                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
+	                            path.getLastPathComponent();
+	                        if (node.getParent() != null) {
+	                            model.removeNodeFromParent(node);
+	                        }
+	                    }
+	                }
+	                
+	                jt.updateUI();
+
+			}
+		});
+
+        extraButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, EXTRA_INFO, "Extra Information", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
     }
     
     
