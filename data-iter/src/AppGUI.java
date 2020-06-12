@@ -21,6 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import org.icepdf.ri.common.ComponentKeyBinding;
+import org.icepdf.ri.common.SwingController;
+import org.icepdf.ri.common.SwingViewBuilder;
+
 
 public class AppGUI {
 
@@ -53,6 +57,21 @@ public class AppGUI {
     private String userEmail;
     
     /**
+     * 
+     */
+    private String adminId;
+    
+    /**
+     * 
+     */
+    private String adminPass;
+    
+    /**
+     * 
+     */
+    private boolean adminStatus;
+    
+    /**
      * ...
      */
     public AppGUI() {
@@ -61,7 +80,10 @@ public class AppGUI {
         this.myVersionNumb = 1.0;
         this.userFirstName = "";
         this.userEmail = "";
-        myFrame.setBounds(100, 100, 873, 798);
+        this.adminId = "";
+        this.adminPass = "";
+        this.adminStatus = false;
+        myFrame.setBounds(100, 100, 1528, 894);
     }
     
     /**
@@ -81,13 +103,15 @@ public class AppGUI {
     private void createPanel() {
         myFrame.getContentPane().setLayout(new BorderLayout(0, 0));
         final JPanel mainPanel = new JPanel();
+        final JPanel centPanel = new JPanel();
         final JPanel westSidePanel = new JPanel();
         final JPanel southSidePanel = new JPanel();
         final JPanel eastSidePanel = new JPanel();
-
-        westSidePanel.setBounds(0, 0, 229, 717);
-        southSidePanel.setBounds(0, 717, 873, 39);
-        eastSidePanel.setBounds(623, 0, 250, 717);
+        
+        centPanel.setBounds(261, 0, 1017, 809);
+        westSidePanel.setBounds(0, 0, 261, 809);
+        southSidePanel.setBounds(0, 811, 1528, 39);
+        eastSidePanel.setBounds(1278, 0, 250, 809);
 
         westSidePanel.setBackground(Color.WHITE);
         southSidePanel.setBackground(Color.GRAY);
@@ -96,21 +120,47 @@ public class AppGUI {
         mainPanel.setLayout(null);
         eastSidePanel.setLayout(null);
         
+        mainPanel.add(centPanel);
         mainPanel.add(westSidePanel);
         mainPanel.add(eastSidePanel);
         mainPanel.add(southSidePanel);
 
         westSidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         southSidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
+        
+        centerPdfView(centPanel);
         createEastSideButtons(eastSidePanel);
         createSouthSideButtons(southSidePanel);
 
         this.myFrame.getContentPane().add(mainPanel);
+
     }
 
-    private void westSideFunction(final JPanel theWestSidePanel) {
+    private void centerPdfView(JPanel theCentSidePanel) {
+        String filepath = "/Users/GyubeomKim/Desktop/v8_absolute.pdf";
 
+        // build a controller
+        SwingController controller = new SwingController();
+
+        // Build a SwingViewFactory configured with the controller
+        SwingViewBuilder factory = new SwingViewBuilder(controller);
+        JPanel viewerComponentPanel = factory.buildViewerPanel();
+        
+        viewerComponentPanel.setPreferredSize(new Dimension(1017, 809));
+        viewerComponentPanel.setMaximumSize(new Dimension(1017, 809));
+        
+        // add copy keyboard command
+        ComponentKeyBinding.install(controller, viewerComponentPanel);
+
+        // add interactive mouse link annotation support via callback
+        controller.getDocumentViewController().setAnnotationCallback(
+        new org.icepdf.ri.common.MyAnnotationCallback(
+        controller.getDocumentViewController()));
+
+        theCentSidePanel.add(viewerComponentPanel);
+        System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
+        // Open a PDF document to view
+         controller.openDocument(filepath);
     }
     
     /**
@@ -123,6 +173,8 @@ public class AppGUI {
         JMenu more = new JMenu("More");
         final JMenuItem userSetting = new JMenuItem("User Setting");
         final JMenuItem about = new JMenuItem("About");
+        final JMenuItem admin = new JMenuItem("Administrator");
+        more.add(admin);
         more.add(userSetting);
         more.add(about);
 
@@ -159,7 +211,37 @@ public class AppGUI {
                 }
             }
         });
+        
+        admin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                JPanel panel = new JPanel(new BorderLayout(5, 5));
 
+                JPanel labels = new JPanel(new BorderLayout());
+                labels.add(new JLabel("ID", SwingConstants.RIGHT),BorderLayout.NORTH);
+                labels.add(new JLabel("Password:", SwingConstants.RIGHT), BorderLayout.SOUTH);
+                panel.add(labels, BorderLayout.WEST);
+
+                JPanel controls = new JPanel(new BorderLayout());
+                JTextField id = new JTextField();
+                controls.add(id, BorderLayout.NORTH);
+                id.setPreferredSize(new Dimension(200, 20));
+                JTextField password = new JTextField();
+                password.setPreferredSize(new Dimension(200, 20));
+                controls.add(password, BorderLayout.SOUTH);
+                panel.add(controls, BorderLayout.CENTER);
+                int log = JOptionPane.showConfirmDialog(null, panel, "Admin. Log-in", JOptionPane.OK_CANCEL_OPTION);
+                if(log == 0) {
+                    adminId = id.getText();
+                    adminPass = password.getText();
+                    if(adminId.equals("admin") && adminPass.equals("1212")) {
+                        adminStatus = true;
+                        System.out.println(adminStatus);
+                    }
+                }
+            }
+        });
+        
         about.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -202,6 +284,10 @@ public class AppGUI {
         theSouthSidePanel.add(exportButton);
     }
     
+    private boolean getAdminStatus() {
+        return this.adminStatus;
+    }
+    
     /**
      * ...
      * @param theEasthSidePanel ...
@@ -228,7 +314,8 @@ public class AppGUI {
         itemLabel.setBounds(31, 144, 61, 16);
         theEasthSidePanel.add(itemLabel);
     }
-
+    
+    
     /**
      * It makes the frame to locate in center of window screen.
      * 
@@ -244,11 +331,11 @@ public class AppGUI {
     /**
      * Launch the application.
      */
-    /*public static void main(String[] args) {
+    public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                	AppGUI window = new AppGUI();
+                    AppGUI window = new AppGUI();
                     window.run();
                 }
                 catch (Exception e) {
@@ -256,5 +343,5 @@ public class AppGUI {
                 }
             }
         });
-    }*/
+    }
 }
