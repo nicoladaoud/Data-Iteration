@@ -43,6 +43,8 @@ public class AppGUI {
 	
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
+    
+    private String filePath;
 
     /**
      * This is frame.
@@ -170,7 +172,7 @@ public class AppGUI {
     }
     
     private void centerPdfView(JPanel theCentSidePanel) {
-        String filepath = "/Users/GyubeomKim/Desktop/v8_absolute.pdf";
+        String filepath = this.filePath;
 
         // build a controller
         SwingController controller = new SwingController();
@@ -192,7 +194,7 @@ public class AppGUI {
 
         theCentSidePanel.add(viewerComponentPanel);
         System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
-        // Open a PDF document to view
+         //Open a PDF document to view
          controller.openDocument(filepath);
     }
     
@@ -423,6 +425,43 @@ public class AppGUI {
         JLabel itemLabel = new JLabel("Item:");
         itemLabel.setBounds(31, 144, 61, 16);
         theEasthSidePanel.add(itemLabel);
+        
+        JButton uploadFile = new JButton("Upload PDF");
+        uploadFile.setBounds(16, 290, 117, 29);
+        theEasthSidePanel.add(uploadFile);
+        
+        uploadFile.setBackground(Color.RED);
+        
+        uploadFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser myFileChooser = new JFileChooser();
+				
+                final int result = myFileChooser.showSaveDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                   
+                        String path = myFileChooser.getSelectedFile().getAbsolutePath();
+                        filePath = path;
+                        String fileName = myFileChooser.getSelectedFile().getName();
+                        
+                        DefaultMutableTreeNode SelectedNode;
+
+    		            treePath = jt.getSelectionPath();
+    		            SelectedNode = (DefaultMutableTreeNode) treePath
+    		                    .getLastPathComponent();
+
+    		            index = SelectedNode.getIndex(SelectedNode) + 1;
+
+    		            String NodeStr = fileName;
+
+    		            node = new DefaultMutableTreeNode(NodeStr);
+    		            SelectedNode.insert(node, index);
+    		            jt.updateUI();
+                        
+   
+                }
+				
+			}
+		});
         
         
         addButton.addActionListener(new ActionListener() {
