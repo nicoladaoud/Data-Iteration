@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -43,6 +44,8 @@ public class AppGUI {
 	
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
+    
+    private HashMap<String, String> map = new HashMap<String, String>();
     
     private String filePath;
 
@@ -449,7 +452,47 @@ public class AppGUI {
         uploadFile.setBounds(16, 290, 117, 29);
         theEasthSidePanel.add(uploadFile);
         
+        JButton viewPdf = new JButton("View PDF");
+        viewPdf.setBounds(16, 320, 117, 29);
+        theEasthSidePanel.add(viewPdf);
+        
+        
         uploadFile.setBackground(Color.RED);
+        
+        
+        viewPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    
+				 DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+
+	                TreePath[] paths = jt.getSelectionPaths();
+	                if (paths != null) {
+	                    for (TreePath path : paths) {
+	                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
+	                            path.getLastPathComponent();
+	                        if (node.getParent() != null) {
+	                        	 String name = node.toString();
+	                        	 String currentPath = map.getOrDefault(name, "NO");
+	                        	 if (!currentPath.equals("NO")) {
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        		 controller.openDocument(currentPath);
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        	 }
+	                        }
+	                    }
+	                }
+	                
+	                jt.updateUI();
+
+			}
+		});
         
         uploadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -461,6 +504,8 @@ public class AppGUI {
                         String path = myFileChooser.getSelectedFile().getAbsolutePath();
                         filePath = path;
                         String fileName = myFileChooser.getSelectedFile().getName();
+                        
+                        map.put(fileName, path);
                         
                         DefaultMutableTreeNode SelectedNode;
 
