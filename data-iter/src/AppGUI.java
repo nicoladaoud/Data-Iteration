@@ -282,6 +282,7 @@ public class AppGUI {
      * Gets dimension of current screen for application.
      */
     private int dimensionHeight;
+    public PDFViewer myPDF;
     
 	/**
      * Instantiates all of the fields and creates object.
@@ -353,7 +354,14 @@ public class AppGUI {
         westSidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         southSidePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         
-        centerPdfView(centPanel);
+        myPDF = new PDFViewer();
+       	myPDF.centerPdfView(centPanel);
+       	this.controller = myPDF.controller;
+        //////////////////////////////////////centerPdfView(centPanel);
+        centPanel.add(myPDF.viewerComponentPanel);
+        System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
+         //Open a PDF document to view
+        
         createEastSideButtons(eastSidePanel);
         createWestSideTree(westSidePanel);
         createSouthSideButtons(southSidePanel);
@@ -369,42 +377,7 @@ public class AppGUI {
 		this.jt = new JTree(new TreeInit().getTree());
 		theWestSidePanel.add(this.jt);
     }
-    
-    /**
-     * 
-     * Builds the PDF viewer and allows uploading of PDF's.
-     * @param theCentSidePanel
-     */
-    private void centerPdfView(JPanel theCentSidePanel) {
-    	
-        // build a controller
-        this.controller = new SwingController();
-
-        // Build a SwingViewFactory configured with the controller
-        SwingViewBuilder factory = new SwingViewBuilder(controller);
-        JPanel viewerComponentPanel = factory.buildViewerPanel();
-        
-        int southPanelSize = (int) (this.dimensionHeight * 0.84);
-        int eastWidth = (int) (this.dimensionWidth * 0.18);
-        int westWidth = (int) (this.dimensionWidth * 0.15);
-        int centWidth = this.dimensionWidth - westWidth - eastWidth;
-
-        viewerComponentPanel.setPreferredSize(new Dimension(centWidth, southPanelSize));
-        viewerComponentPanel.setMaximumSize(new Dimension(centWidth, southPanelSize));
-        
-        // add copy keyboard command
-        ComponentKeyBinding.install(controller, viewerComponentPanel);
-
-        // add interactive mouse link annotation support via callback
-        controller.getDocumentViewController().setAnnotationCallback(
-        new org.icepdf.ri.common.MyAnnotationCallback(
-        controller.getDocumentViewController()));
-
-        theCentSidePanel.add(viewerComponentPanel);
-        System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
-         //Open a PDF document to view
-    }
-    
+  
     /**
      * 
      * Creates the menu for the window.
@@ -671,7 +644,7 @@ public class AppGUI {
 	                        		 
 	                        		 
 	                        		 
-	                        		 controller.openDocument(currentPath);
+	                        		myPDF.controller.openDocument(currentPath);
 	                        		 
 	                        		 
 	                        		 
@@ -713,7 +686,7 @@ public class AppGUI {
     		            node = new DefaultMutableTreeNode(NodeStr);
     		            SelectedNode.insert(node, index);
     		            jt.updateUI();
-    		            controller.openDocument(filePath);
+    		            myPDF.controller.openDocument(filePath);
                 }
 				
 			}
