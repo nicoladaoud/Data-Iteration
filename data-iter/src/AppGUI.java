@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -43,6 +44,8 @@ public class AppGUI {
 	
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
+    
+    private HashMap<String, String> map = new HashMap<String, String>();
     
     private String filePath;
 
@@ -119,6 +122,16 @@ public class AppGUI {
 	/**
      * ...
      */
+    private int dimensionWidth;
+    
+    /**
+     * ...
+     */
+    private int dimensionHeight;
+    
+	/**
+     * ...
+     */
     public AppGUI() {
         this.myFrame = new JFrame("User Guide");
         this.myChooser = new JFileChooser(".");
@@ -133,7 +146,10 @@ public class AppGUI {
         this.jt = null;
         this.filePath = null;
         this.controller = null;
-        myFrame.setBounds(100, 100, 1528, 894);
+        this.map = null;
+        this.dimensionWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+        this.dimensionHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+        myFrame.setSize(this.dimensionWidth, this.dimensionHeight);
     }
     
     /**
@@ -158,10 +174,16 @@ public class AppGUI {
         final JPanel southSidePanel = new JPanel();
         final JPanel eastSidePanel = new JPanel();
         
-        centPanel.setBounds(261, 0, 1017, 809);
-        westSidePanel.setBounds(0, 0, 261, 809);
-        southSidePanel.setBounds(0, 811, 1528, 39);
-        eastSidePanel.setBounds(1278, 0, 250, 809);
+        int southPanelSize = (int) (this.dimensionHeight * 0.84);
+        int eastWidth = (int) (this.dimensionWidth * 0.18);
+        int westWidth = (int) (this.dimensionWidth * 0.15);
+        int centWidth = this.dimensionWidth - westWidth - eastWidth;
+        int southHeight = (int) (this.dimensionHeight * 0.04);
+        
+        centPanel.setBounds(westWidth, 0, centWidth, southPanelSize);
+        westSidePanel.setBounds(0, 0, westWidth, southPanelSize);
+        southSidePanel.setBounds(0, southPanelSize, this.dimensionWidth, southHeight);
+        eastSidePanel.setBounds(centWidth + westWidth, 0, eastWidth, southPanelSize);
 
         westSidePanel.setBackground(Color.WHITE);
         southSidePanel.setBackground(Color.GRAY);
@@ -201,8 +223,13 @@ public class AppGUI {
         SwingViewBuilder factory = new SwingViewBuilder(controller);
         JPanel viewerComponentPanel = factory.buildViewerPanel();
         
-        viewerComponentPanel.setPreferredSize(new Dimension(1017, 809));
-        viewerComponentPanel.setMaximumSize(new Dimension(1017, 809));
+        int southPanelSize = (int) (this.dimensionHeight * 0.84);
+        int eastWidth = (int) (this.dimensionWidth * 0.18);
+        int westWidth = (int) (this.dimensionWidth * 0.15);
+        int centWidth = this.dimensionWidth - westWidth - eastWidth;
+
+        viewerComponentPanel.setPreferredSize(new Dimension(centWidth, southPanelSize));
+        viewerComponentPanel.setMaximumSize(new Dimension(centWidth, southPanelSize));
         
         // add copy keyboard command
         ComponentKeyBinding.install(controller, viewerComponentPanel);
@@ -449,7 +476,47 @@ public class AppGUI {
         uploadFile.setBounds(16, 290, 117, 29);
         theEasthSidePanel.add(uploadFile);
         
+        JButton viewPdf = new JButton("View PDF");
+        viewPdf.setBounds(16, 320, 117, 29);
+        theEasthSidePanel.add(viewPdf);
+        
+        
         uploadFile.setBackground(Color.RED);
+        
+        
+        viewPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    
+				 DefaultTreeModel model = (DefaultTreeModel) jt.getModel();
+
+	                TreePath[] paths = jt.getSelectionPaths();
+	                if (paths != null) {
+	                    for (TreePath path : paths) {
+	                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) 
+	                            path.getLastPathComponent();
+	                        if (node.getParent() != null) {
+	                        	 String name = node.toString();
+	                        	 String currentPath = map.getOrDefault(name, "NO");
+	                        	 if (!currentPath.equals("NO")) {
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        		 controller.openDocument(currentPath);
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        		 
+	                        	 }
+	                        }
+	                    }
+	                }
+	                
+	                jt.updateUI();
+
+			}
+		});
         
         uploadFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -461,6 +528,8 @@ public class AppGUI {
                         String path = myFileChooser.getSelectedFile().getAbsolutePath();
                         filePath = path;
                         String fileName = myFileChooser.getSelectedFile().getName();
+                        
+                        map.put(fileName, path);
                         
                         DefaultMutableTreeNode SelectedNode;
 
