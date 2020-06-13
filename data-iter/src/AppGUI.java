@@ -39,9 +39,15 @@ import org.icepdf.ri.common.SwingViewBuilder;
 
 public class AppGUI {
 	
+	/**
+	 * String to show for extra button.
+	 */
 	private static final String EXTRA_INFO = "Application Location: C:\\Download \n"
 			+ "For inquiries, contact 'junyeob@uw.edu'\r\n" + "Thank you for choosing our software.";
 	
+	/**
+	 * String to store developers names.
+	 */
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
     
@@ -50,87 +56,87 @@ public class AppGUI {
     private String filePath;
 
     /**
-     * This is frame.
+     * This is the main frame.
      */
     private JFrame myFrame;
 
     /**
-     * This is file chooser.
+     * This is file chooser for import button.
      */
     private JFileChooser myChooser;
 
     /**
-     * ...
+     * Current version number
      */
     private double myVersionNumb;
     
     /**
-     * 
+     * Stores user's first name.
      */
     private String userFirstName;
     
     /**
-     * 
+     * Stores the user's email.
      */
     private String userEmail;
     
     /**
-     * 
+     * Stores the admin's ID number.
      */
     private String adminId;
     
     /**
-     * 
+     * Stores the admin's password.
      */
     private String adminPass;
     
     /**
-     * 
+     * Stores admin status for accessibility.
      */
     private boolean adminStatus;
     
 	/**
-     * ...
+     * File for importing previous settings.
      */
     private File mySettings;
     
 	/**
-     * ...
+     * Path of the tree.
      */
     private TreePath treePath;
     
 	/**
-     * ...
+     * Tree.
      */
     private JTree jt;
     
 	/**
-     * ...
+     * Index.
      */
     private int index;
     
 	/**
-     * ...
+     * Controller of Swing.
      */
 	private SwingController controller;
 	
 	/**
-     * ...
+     * Mutable tree node.
      */
 	private DefaultMutableTreeNode node;
 	
 	/**
-     * ...
+     * Gets dimension of current screen for application.
      */
     private int dimensionWidth;
     
     /**
-     * ...
+     * Gets dimension of current screen for application.
      */
     private int dimensionHeight;
     
 	/**
-     * ...
+     * Instantiates all of the fields and creates object.
      */
     public AppGUI() {
         this.myFrame = new JFrame("User Guide");
@@ -152,7 +158,7 @@ public class AppGUI {
     }
     
     /**
-     * ...
+     * Builds the application and runs it.
      */
     public void run() {
         createPanel();
@@ -163,7 +169,7 @@ public class AppGUI {
     }
     
     /**
-     * ...
+     * Builds the Panels for each section of the window.
      */
     private void createPanel() {
         myFrame.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -208,11 +214,19 @@ public class AppGUI {
 
     }
     
+    /**
+     * Builds West Side tree for file storing and branching.
+     */
     private void createWestSideTree(final JPanel theWestSidePanel) {
 		this.jt = new JTree(new TreeInit().getTree());
 		theWestSidePanel.add(this.jt);
     }
     
+    /**
+     * 
+     * Builds the PDF viewer and allows uploading of PDF's.
+     * @param theCentSidePanel
+     */
     private void centerPdfView(JPanel theCentSidePanel) {
     	
         // build a controller
@@ -244,8 +258,9 @@ public class AppGUI {
     }
     
     /**
-     * ...
-     * @param theFrame ...
+     * 
+     * Creates the menu for the window.
+     * @param theFrame the Frame.
      */
     private void createMenu(final JFrame theFrame) {
         JMenuBar menuBar = new JMenuBar();
@@ -333,8 +348,9 @@ public class AppGUI {
     }
     
     /**
-     * ...
-     * @return ...
+     * 
+     * Generates the message with current information.
+     * @return aboutMessage
      */
     private String aboutMessage() {
         return DEVELOPERS + "\n                                    Version: "
@@ -342,18 +358,18 @@ public class AppGUI {
     }
 
     /**
-     * ...
+     * Sets the version number.
      * 
-     * @param theVersionNumb ...
+     * @param theVersionNumb
      */
     public void setVersionNumb(final double theVersionNumb) {
         this.myVersionNumb = theVersionNumb;
     }
 
     /**
-     * ...
+     * Creates buttons for the south layout.
      * 
-     * @param theSouthSidePanel ...
+     * @param theSouthSidePanel 
      */
     private void createSouthSideButtons(final JPanel theSouthSidePanel) {
         final JButton importButton = new JButton("Import");
@@ -437,13 +453,19 @@ public class AppGUI {
 		return success;
 	}
     
+	/**
+	 * Getter for admin status.
+	 * 
+	 * @return adminStatus
+	 */
     private boolean getAdminStatus() {
         return this.adminStatus;
     }
     
     /**
-     * ...
-     * @param theEasthSidePanel ...
+     * Builds east side buttons.
+     * 
+     * @param theEasthSidePanel
      */
     private void createEastSideButtons(final JPanel theEasthSidePanel) {
         JButton addButton = new JButton("ADD");
