@@ -86,18 +86,37 @@ public class AppGUI {
      */
     private boolean adminStatus;
     
+	/**
+     * ...
+     */
     private File mySettings;
     
+	/**
+     * ...
+     */
     private TreePath treePath;
     
+	/**
+     * ...
+     */
     private JTree jt;
     
+	/**
+     * ...
+     */
     private int index;
     
-	private DefaultMutableTreeNode root;
+	/**
+     * ...
+     */
+	private SwingController controller;
 	
+	/**
+     * ...
+     */
 	private DefaultMutableTreeNode node;
-    /**
+    
+	/**
      * ...
      */
     public AppGUI() {
@@ -112,6 +131,8 @@ public class AppGUI {
         this.mySettings = null;
         this.treePath = null;
         this.jt = null;
+        this.filePath = null;
+        this.controller = null;
         myFrame.setBounds(100, 100, 1528, 894);
     }
     
@@ -172,10 +193,9 @@ public class AppGUI {
     }
     
     private void centerPdfView(JPanel theCentSidePanel) {
-        String filepath = this.filePath;
-
+    	
         // build a controller
-        SwingController controller = new SwingController();
+        this.controller = new SwingController();
 
         // Build a SwingViewFactory configured with the controller
         SwingViewBuilder factory = new SwingViewBuilder(controller);
@@ -195,7 +215,6 @@ public class AppGUI {
         theCentSidePanel.add(viewerComponentPanel);
         System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
          //Open a PDF document to view
-         controller.openDocument(filepath);
     }
     
     /**
@@ -456,8 +475,7 @@ public class AppGUI {
     		            node = new DefaultMutableTreeNode(NodeStr);
     		            SelectedNode.insert(node, index);
     		            jt.updateUI();
-                        
-   
+    		            controller.openDocument(filePath);
                 }
 				
 			}
