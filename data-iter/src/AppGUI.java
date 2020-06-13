@@ -118,7 +118,7 @@ public class AppGUI {
      * ...
      */
 	private DefaultMutableTreeNode node;
-    
+	
 	/**
      * ...
      */
@@ -146,7 +146,6 @@ public class AppGUI {
         this.jt = null;
         this.filePath = null;
         this.controller = null;
-        this.map = null;
         this.dimensionWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
         this.dimensionHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         myFrame.setSize(this.dimensionWidth, this.dimensionHeight);
