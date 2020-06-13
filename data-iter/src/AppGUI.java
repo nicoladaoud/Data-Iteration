@@ -51,7 +51,155 @@ public class AppGUI {
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
     
-    private HashMap<String, String> map = new HashMap<String, String>();
+    public HashMap<String, String> getMap() {
+		return map;
+	}
+
+	public void setMap(HashMap<String, String> map) {
+		this.map = map;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public JFrame getMyFrame() {
+		return myFrame;
+	}
+
+	public void setMyFrame(JFrame myFrame) {
+		this.myFrame = myFrame;
+	}
+
+	public JFileChooser getMyChooser() {
+		return myChooser;
+	}
+
+	public void setMyChooser(JFileChooser myChooser) {
+		this.myChooser = myChooser;
+	}
+
+	public double getMyVersionNumb() {
+		return myVersionNumb;
+	}
+
+	public void setMyVersionNumb(double myVersionNumb) {
+		this.myVersionNumb = myVersionNumb;
+	}
+
+	public String getUserFirstName() {
+		return userFirstName;
+	}
+
+	public void setUserFirstName(String userFirstName) {
+		this.userFirstName = userFirstName;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public String getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
+	}
+
+	public String getAdminPass() {
+		return adminPass;
+	}
+
+	public void setAdminPass(String adminPass) {
+		this.adminPass = adminPass;
+	}
+
+	public File getMySettings() {
+		return mySettings;
+	}
+
+	public void setMySettings(File mySettings) {
+		this.mySettings = mySettings;
+	}
+
+	public TreePath getTreePath() {
+		return treePath;
+	}
+
+	public void setTreePath(TreePath treePath) {
+		this.treePath = treePath;
+	}
+
+	public JTree getJt() {
+		return jt;
+	}
+
+	public void setJt(JTree jt) {
+		this.jt = jt;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public SwingController getController() {
+		return controller;
+	}
+
+	public void setController(SwingController controller) {
+		this.controller = controller;
+	}
+
+	public DefaultMutableTreeNode getNode() {
+		return node;
+	}
+
+	public void setNode(DefaultMutableTreeNode node) {
+		this.node = node;
+	}
+
+	public int getDimensionWidth() {
+		return dimensionWidth;
+	}
+
+	public void setDimensionWidth(int dimensionWidth) {
+		this.dimensionWidth = dimensionWidth;
+	}
+
+	public int getDimensionHeight() {
+		return dimensionHeight;
+	}
+
+	public void setDimensionHeight(int dimensionHeight) {
+		this.dimensionHeight = dimensionHeight;
+	}
+
+	public static String getExtraInfo() {
+		return EXTRA_INFO;
+	}
+
+	public static String getDevelopers() {
+		return DEVELOPERS;
+	}
+
+	public void setAdminStatus(boolean adminStatus) {
+		this.adminStatus = adminStatus;
+	}
+
+	private HashMap<String, String> map = new HashMap<String, String>();
     
     private String filePath;
 
