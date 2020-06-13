@@ -43,6 +43,8 @@ public class AppGUI {
 	
     private static final String DEVELOPERS =
                     "Tyler Phippen, Nicola Daoud, Gyubeom Kim, and Jun Kim";
+    
+    private String filePath;
 
     /**
      * This is frame.
@@ -84,18 +86,37 @@ public class AppGUI {
      */
     private boolean adminStatus;
     
+	/**
+     * ...
+     */
     private File mySettings;
     
+	/**
+     * ...
+     */
     private TreePath treePath;
     
+	/**
+     * ...
+     */
     private JTree jt;
     
+	/**
+     * ...
+     */
     private int index;
     
-	private DefaultMutableTreeNode root;
+	/**
+     * ...
+     */
+	private SwingController controller;
 	
+	/**
+     * ...
+     */
 	private DefaultMutableTreeNode node;
-    /**
+    
+	/**
      * ...
      */
     public AppGUI() {
@@ -110,6 +131,8 @@ public class AppGUI {
         this.mySettings = null;
         this.treePath = null;
         this.jt = null;
+        this.filePath = null;
+        this.controller = null;
         myFrame.setBounds(100, 100, 1528, 894);
     }
     
@@ -170,10 +193,9 @@ public class AppGUI {
     }
     
     private void centerPdfView(JPanel theCentSidePanel) {
-        String filepath = "/Users/GyubeomKim/Desktop/v8_absolute.pdf";
-
+    	
         // build a controller
-        SwingController controller = new SwingController();
+        this.controller = new SwingController();
 
         // Build a SwingViewFactory configured with the controller
         SwingViewBuilder factory = new SwingViewBuilder(controller);
@@ -192,8 +214,7 @@ public class AppGUI {
 
         theCentSidePanel.add(viewerComponentPanel);
         System.getProperties().put("org.icepdf.core.scaleImages", "true"); 
-        // Open a PDF document to view
-         controller.openDocument(filepath);
+         //Open a PDF document to view
     }
     
     /**
@@ -423,6 +444,42 @@ public class AppGUI {
         JLabel itemLabel = new JLabel("Item:");
         itemLabel.setBounds(31, 144, 61, 16);
         theEasthSidePanel.add(itemLabel);
+        
+        JButton uploadFile = new JButton("Upload PDF");
+        uploadFile.setBounds(16, 290, 117, 29);
+        theEasthSidePanel.add(uploadFile);
+        
+        uploadFile.setBackground(Color.RED);
+        
+        uploadFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser myFileChooser = new JFileChooser();
+				
+                final int result = myFileChooser.showSaveDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                   
+                        String path = myFileChooser.getSelectedFile().getAbsolutePath();
+                        filePath = path;
+                        String fileName = myFileChooser.getSelectedFile().getName();
+                        
+                        DefaultMutableTreeNode SelectedNode;
+
+    		            treePath = jt.getSelectionPath();
+    		            SelectedNode = (DefaultMutableTreeNode) treePath
+    		                    .getLastPathComponent();
+
+    		            index = SelectedNode.getIndex(SelectedNode) + 1;
+
+    		            String NodeStr = fileName;
+
+    		            node = new DefaultMutableTreeNode(NodeStr);
+    		            SelectedNode.insert(node, index);
+    		            jt.updateUI();
+    		            controller.openDocument(filePath);
+                }
+				
+			}
+		});
         
         
         addButton.addActionListener(new ActionListener() {
